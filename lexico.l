@@ -1,0 +1,3 @@
+%{
+    #include "TablaSimbolos/TablaSimbolos.h"
+}
