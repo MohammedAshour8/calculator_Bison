@@ -35,7 +35,6 @@ int buscarElemento(char *componentelex){
     return buscar_nodo(&tablaSimbolos, componentelex);
 }
 
-
 void destruirTabla(){
     destruir(&tablaSimbolos);
 }

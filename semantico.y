@@ -4,53 +4,54 @@
 #include <string.h>
 #include "TablaSimbolos/TablaSimbolos.h"
 #include "definiciones.h"
+#include "lex.yy.h"
 
-void abrirArchivo(char *nombreArchivo);
-void cerrar();
+extern int yylex();
+void yyerror(char *s);
+void ayuda();
 %}
 
-%option noyywrap
+%union{
+	float valor;
+	char *componente;
+}
 
-%option yylineno
+%start input
 
-%option noinput
+%token <num> NUM
+%token <lexema> IDENTIFIER
+%token <lexema> FILE
 
-%option nounput
+%token HELP
+%token EXIT
+%token CLEAR
+%token CONSTRAINTS
+%token WORKSPACE
+%token TABLE
 
-NEWLINE                 \n
-SPACE                   [ ]
-SEPARATOR               ({SPACE}|\t|\r)+
-SEMICOLON               ;
+%token SUM_OP
+%token SUB_OP
+%token MUL_OP
+%token DIV_OP
+%token MOD_OP
+%token POW_OP
 
-UNICODE_CHAR            .
-UNICODE_LETTER          [a-zA-Z]
-UNICODE_DIGIT           [0-9]
+%right ASSIGN_OP
+%left '+' '-' SUM_OP SUB_OP
+%left '*' '/' MUL_OP DIV_OP
+%left '%' MOD_OP
+%left NEGATIVE
+%right '^' POW_OP
 
-LETTER                  {UNICODE_LETTER}|_
-DECIMAL_DIGIT           {UNICODE_DIGIT}
+input:
+	| input line
+;
 
-DECIMAL_LIT             0|[1-9](_?{DECIMAL_DIGIT})*
+line:	'\n'
+	| exp ';' '\n' {printf ("\t%.10g\n", $1);}
+	| exp '\n' {printf("\n");}
+	| error {yyclearin; yyerrok;}
+;
 
-DECIMALS                {DECIMAL_DIGIT}+
-DECIMAL_EXPONENT        [eE][+-]?{DECIMALS}
-FLOAT_LIT               {DECIMALS}\.{DECIMALS}?{DECIMAL_EXPONENT}?|\.{DECIMALS}{DECIMAL_EXPONENT}?|{DECIMALS}{DECIMAL_EXPONENT}?
-
-NUMBER			{DECIMAL_LIT}|{FLOAT_LIT}
-
-IDENTIFIER              {LETTER}({LETTER}|{UNICODE_DIGIT})*
-
-FILE_NAME               {IDENTIFIER}
-
-OPERATORS               [+*/%&,;.:|^<>=!~()[\]{}-]
-SUMASSIGN_OP            \+=
-SUBASSIGN_OP            -=
-MULTASSIGN_OP           \*=
-DIVASSIGN_OP            \/=
-ASSIGN_OP               =
-
-%x READ
-
-%%
-
-"QUIT"			{yyterminate();}
-"WORKSPACE"		{
+exp:	NUM	{$$ = $1;}
+	| IDENTIFIER {if buscar_elem

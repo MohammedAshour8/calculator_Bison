@@ -12,6 +12,7 @@ typedef struct{
     char *lexema;
     int tipoElemento;
     float valor;
+    double (*fnc)();
 } componente;
 
 //////////////////////////////////////////FIN PARTE MODIFICABLE
