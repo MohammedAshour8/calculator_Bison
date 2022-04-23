@@ -55,7 +55,9 @@
 				0,
 				1,
 				2,
-				3
+				3,
+				4,
+				5
 			]
 		}
 	],
@@ -91,7 +93,9 @@
 				0,
 				1,
 				2,
-				3
+				3,
+				4,
+				5
 			]
 		}
 	],
@@ -119,6 +123,18 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "TablaSimbolos/TablaSimbolos.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "semantico.tab.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "lex.yy.c",
 			"sourceGroupIndex" : 0
 		}
 	],

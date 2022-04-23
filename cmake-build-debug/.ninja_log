@@ -1,3 +1,23 @@
 # ninja log v5
-20	36	1650032542633288906	practica3	c8b36833ea108ac5
-0	20	1650032542621288873	CMakeFiles/practica3.dir/main.c.o	27ab6eaba166a51d
+1	65	1650715801339579461	CMakeFiles/practica3.dir/ABB/abb.c.o	209a34cae74c3fcf
+42	76	1650715857556235510	practica3	bf6a320cbd2c31b7
+0	57	1650715801331579368	CMakeFiles/practica3.dir/GestionErrores/GestionErrores.c.o	71ad9fc53df92733
+1	30	1650717774411894352	CMakeFiles/practica3.dir/main.c.o	27ab6eaba166a51d
+1	57	1650715801331579368	CMakeFiles/practica3.dir/TablaSimbolos/TablaSimbolos.c.o	5947236ce327514e
+1	47	1650718539655417167	CMakeFiles/practica3.dir/main.c.o	27ab6eaba166a51d
+1	40	1650718596495718088	CMakeFiles/practica3.dir/main.c.o	27ab6eaba166a51d
+1	69	1650718596523718240	CMakeFiles/practica3.dir/lex.yy.c.o	283d4033598670f9
+0	37	1650718647411999924	CMakeFiles/practica3.dir/main.c.o	27ab6eaba166a51d
+0	69	1650718647444000105	CMakeFiles/practica3.dir/lex.yy.c.o	283d4033598670f9
+1	35	1650718781444789315	CMakeFiles/practica3.dir/main.c.o	27ab6eaba166a51d
+1	80	1650718781488789584	CMakeFiles/practica3.dir/lex.yy.c.o	283d4033598670f9
+1	30	1650719088562788847	CMakeFiles/practica3.dir/main.c.o	27ab6eaba166a51d
+1	68	1650719088598789093	CMakeFiles/practica3.dir/lex.yy.c.o	283d4033598670f9
+0	33	1650719130563077303	CMakeFiles/practica3.dir/main.c.o	27ab6eaba166a51d
+0	44	1650719130571077359	CMakeFiles/practica3.dir/semantico.tab.c.o	28a4ac5f0d7b8685
+0	57	1650719130587077469	CMakeFiles/practica3.dir/lex.yy.c.o	283d4033598670f9
+57	76	1650719130603077579	practica3	12c2d10a092f02d3
+1	39	1650722075977610274	CMakeFiles/practica3.dir/main.c.o	27ab6eaba166a51d
+1	44	1650722075985610336	CMakeFiles/practica3.dir/semantico.tab.c.o	28a4ac5f0d7b8685
+2	71	1650722076013610552	CMakeFiles/practica3.dir/lex.yy.c.o	283d4033598670f9
+71	90	1650722076033610707	practica3	12c2d10a092f02d3

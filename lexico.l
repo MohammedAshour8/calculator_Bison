@@ -4,7 +4,7 @@
 #include <string.h>
 #include "TablaSimbolos/TablaSimbolos.h"
 #include "definiciones.h"
-#include "semantico.h"
+#include "semantico.tab.h"
 
 void abrirArchivo(char *nombreArchivo);
 void cerrar();
@@ -36,7 +36,7 @@ DECIMALS                {DECIMAL_DIGIT}+
 DECIMAL_EXPONENT        [eE][+-]?{DECIMALS}
 FLOAT_LIT               {DECIMALS}\.{DECIMALS}?{DECIMAL_EXPONENT}?|\.{DECIMALS}{DECIMAL_EXPONENT}?|{DECIMALS}{DECIMAL_EXPONENT}?
 
-NUMBER			{DECIMAL_LIT}|{FLOAT_LIT}
+NUMBER			        {DECIMAL_LIT}|{FLOAT_LIT}
 
 IDENTIFIER              {LETTER}({LETTER}|{UNICODE_DIGIT})*
 
@@ -47,11 +47,41 @@ SUMASSIGN_OP            \+=
 SUBASSIGN_OP            -=
 MULTASSIGN_OP           \*=
 DIVASSIGN_OP            \/=
+MODASSIGN_OP            %=
+POWASSIGN_OP            \^=
 ASSIGN_OP               =
 
 %x READ
 
 %%
 
-"QUIT"			{yyterminate();}
-"WORKSPACE"
+"HELP"          {return HELP;}
+"EXIT"			{yyterminate();}
+"CLEAR"         {return CLEAR;}
+"CONSTRAINTS"   {return CONSTRAINTS;}
+"WORKSPACE"     {return WORKSPACE;}
+"TABLE"         {return TABLE;}
+
+{NEWLINE}                       return ((int) *yytext);
+{SEPARATOR}
+
+{SUMASSIGN_OP}        return SUM_OP;
+{SUBASSIGN_OP}        return SUB_OP;
+{MULTASSIGN_OP}       return MUL_OP;
+{DIVASSIGN_OP}        return DIV_OP;
+{MODASSIGN_OP}        return MOD_OP;
+{POWASSIGN_OP}        return POW_OP;
+<<EOF>>               {cerrar(); yyrestart(stdin);}
+
+%%
+
+void abrirArchivo(char *nombreArchivo) {
+    if((yyin = fopen(nombreArchivo, "r")) == NULL) {
+        perror("Error al abrir el archivo");
+        yyin = stdin;
+    }
+}
+
+void cerrar() {
+    fclose(yyin);
+}

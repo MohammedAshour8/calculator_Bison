@@ -1,9 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../ABB/abb.h"
+#include "../definiciones.h"
 
 // estructura de datos ordenada que se encargará de almacenar las palabras clave e identificadores
 abb tablaSimbolos;
+
+void inicializarTabla() {
+    crear(&tablaSimbolos);
+    insertar(&tablaSimbolos, "PI", PI);
+    insertar(&tablaSimbolos, "E", E);
+}
 
 /**
  * función que se encargará de insertar en la tabla un componente léxico determinado

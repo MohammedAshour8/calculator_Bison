@@ -12,15 +12,14 @@ void ayuda();
 %}
 
 %union{
-	float valor;
-	char *componente;
+	float num;
+	char *lexema;
 }
 
 %start input
 
 %token <num> NUM
 %token <lexema> IDENTIFIER
-%token <lexema> FILE
 
 %token HELP
 %token EXIT
@@ -43,6 +42,10 @@ void ayuda();
 %left NEGATIVE
 %right '^' POW_OP
 
+%type <num> exp
+
+%%
+
 input:
 	| input line
 ;
@@ -54,4 +57,19 @@ line:	'\n'
 ;
 
 exp:	NUM	{$$ = $1;}
-	| IDENTIFIER {if buscar_elem
+;
+
+%%
+
+void yyerror(char *s) {
+	fprintf(stderr, "Error: %s\n", s);
+}
+
+void ayuda() {
+	printf("\n\tHELP\n\t\tMuestra esta ayuda\n\n");
+	printf("\tEXIT\n\t\tCierra el programa\n\n");
+	printf("\tCLEAR\n\t\tLimpia la pantalla\n\n");
+	printf("\tCONSTRAINTS\n\t\tMuestra las restricciones\n\n");
+	printf("\tWORKSPACE\n\t\tMuestra el espacio de trabajo\n\n");
+	printf("\tTABLE\n\t\tMuestra la tabla de simbolos\n\n");
+}

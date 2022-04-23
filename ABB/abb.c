@@ -1,4 +1,5 @@
 #include "abb.h"
+#include "../definiciones.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -17,8 +18,8 @@ struct celda {
 /////////////////////////// INICIO PARTE MODIFICABLE
 
 /*Extraer la clave de una celda */
-tipoclave _clave_elem(componente *E) {
-    return E->lexema;
+tipoclave _clave_elem(componente *celda) {
+    return celda->lexema;
 }
 
 /* Esta funcion puente nos permite modificar el tipo de
@@ -62,13 +63,13 @@ abb der(abb A) {
     return A->der;
 }
 
-void leer(abb A, componente *E) {
-    *E = A->info;
+void leer(abb A, componente *celda) {
+    *celda = A->info;
 }
 // Función privada para comparar las claves
 
-int _comparar_clave_elem(tipoclave cl, componente E) {
-    return _comparar_claves(cl, _clave_elem(&E));
+int _comparar_clave_elem(tipoclave cl, componente celda) {
+    return _comparar_claves(cl, _clave_elem(&celda));
 }
 //Función privada para informar si una clave está en el árbol
 
@@ -90,14 +91,12 @@ unsigned _es_miembro_clave(abb A, tipoclave cl) {
 
 //Funciones públicas
 
-unsigned es_miembro(abb A, componente E) {
-    return _es_miembro_clave(A, _clave_elem(&E));
+unsigned es_miembro(abb A, componente celda) {
+    return _es_miembro_clave(A, _clave_elem(&celda));
 }
 
 int buscar_nodo(abb *A, char *lexema) {
     if (es_vacio(*A)) {
-        // insertar(A, lexema, IDENTIFICADOR);
-        // return IDENTIFICADOR;
         return 0;
     }
 
@@ -116,13 +115,13 @@ int buscar_nodo(abb *A, char *lexema) {
 /* Funcion recursiva para insertar un nuevo nodo
    en el arbol. Se presupone que no existe un nodo
    con la misma clave en el arbol. */
-void insertar(abb *A, char *componenteLexico, int lexema) {
+void insertar(abb *A, char *componenteLexico, float valor) {
     if (es_vacio(*A)) {
         *A = (abb) malloc(sizeof(struct celda));
         (*A)->info.lexema = (char *) malloc(strlen(componenteLexico) + 1 * sizeof(char));
         strcpy((*A)->info.lexema, componenteLexico);
         (*A)->info.lexema[strlen(componenteLexico)] = '\0';
-        (*A)->info.tipoElemento = lexema;
+        (*A)->info.valor = valor;
         (*A)->izq = NULL;
         (*A)->der = NULL;
         return;
@@ -131,9 +130,9 @@ void insertar(abb *A, char *componenteLexico, int lexema) {
     int comparacion = strcmp(componenteLexico, (*A)->info.lexema);
 
     if (comparacion > 0) {
-        insertar(&(*A)->der, componenteLexico, lexema);
+        insertar(&(*A)->der, componenteLexico, valor);
     } else {
-        insertar(&(*A)->izq, componenteLexico, lexema);
+        insertar(&(*A)->izq, componenteLexico, valor);
     }
 }
 

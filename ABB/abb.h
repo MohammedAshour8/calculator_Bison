@@ -82,7 +82,7 @@ int buscar_nodo(abb *A, char *lexema);
  * @param A Arbol binario
  * @param E Informacion del nuevo nodo.
  */
-void insertar(abb *A, char *componenteLexico, int lexema);
+void insertar(abb *A, char *componenteLexico, float valor);
 /**
  * Suprime el nodo del arbol <A>
  * @param A
