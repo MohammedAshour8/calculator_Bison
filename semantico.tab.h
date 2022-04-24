@@ -59,17 +59,16 @@ extern int yydebug;
     HELP = 260,                    /* HELP  */
     EXIT = 261,                    /* EXIT  */
     CLEAR = 262,                   /* CLEAR  */
-    CONSTRAINTS = 263,             /* CONSTRAINTS  */
-    WORKSPACE = 264,               /* WORKSPACE  */
-    TABLE = 265,                   /* TABLE  */
-    SUM_OP = 266,                  /* SUM_OP  */
-    SUB_OP = 267,                  /* SUB_OP  */
-    MUL_OP = 268,                  /* MUL_OP  */
-    DIV_OP = 269,                  /* DIV_OP  */
-    MOD_OP = 270,                  /* MOD_OP  */
-    POW_OP = 271,                  /* POW_OP  */
-    ASSIGN_OP = 272,               /* ASSIGN_OP  */
-    NEGATIVE = 273                 /* NEGATIVE  */
+    WORKSPACE = 263,               /* WORKSPACE  */
+    TABLE = 264,                   /* TABLE  */
+    SUM_OP = 265,                  /* SUM_OP  */
+    SUB_OP = 266,                  /* SUB_OP  */
+    MUL_OP = 267,                  /* MUL_OP  */
+    DIV_OP = 268,                  /* DIV_OP  */
+    MOD_OP = 269,                  /* MOD_OP  */
+    POW_OP = 270,                  /* POW_OP  */
+    ASSIGN_OP = 271,               /* ASSIGN_OP  */
+    NEGATIVE = 272                 /* NEGATIVE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -78,12 +77,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 14 "semantico.y"
+#line 15 "semantico.y"
 
 	float num;
 	char *lexema;
 
-#line 87 "semantico.tab.h"
+#line 86 "semantico.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "TablaSimbolos/TablaSimbolos.h"
 #include "definiciones.h"
 #include "semantico.tab.h"
@@ -58,20 +59,23 @@ ASSIGN_OP               =
 "HELP"          {return HELP;}
 "EXIT"			{yyterminate();}
 "CLEAR"         {return CLEAR;}
-"CONSTRAINTS"   {return CONSTRAINTS;}
 "WORKSPACE"     {return WORKSPACE;}
 "TABLE"         {return TABLE;}
 
 {NEWLINE}                       return ((int) *yytext);
 {SEPARATOR}
 
-{SUMASSIGN_OP}        return SUM_OP;
-{SUBASSIGN_OP}        return SUB_OP;
-{MULTASSIGN_OP}       return MUL_OP;
-{DIVASSIGN_OP}        return DIV_OP;
-{MODASSIGN_OP}        return MOD_OP;
-{POWASSIGN_OP}        return POW_OP;
-<<EOF>>               {cerrar(); yyrestart(stdin);}
+{IDENTIFIER}    {yylval.lexema = (char *) malloc(sizeof(yytext)); yylval.lexema = strdup(yytext); return IDENTIFIER;}
+{NUMBER}        {yylval.num = atof(yytext); return NUM;}
+
+{OPERATORS}         {return ((int) *yytext);}
+{SUMASSIGN_OP}      return SUM_OP;
+{SUBASSIGN_OP}      return SUB_OP;
+{MULTASSIGN_OP}     return MUL_OP;
+{DIVASSIGN_OP}      return DIV_OP;
+{MODASSIGN_OP}      return MOD_OP;
+{POWASSIGN_OP}      return POW_OP;
+<<EOF>>             {cerrar(); yyrestart(stdin);}
 
 %%
 

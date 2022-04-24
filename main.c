@@ -8,6 +8,7 @@
 
 int main(int argc, char **argv){
     inicializarTabla();
+    printf("$ ");
     yyparse();
     destruirTabla();
     return 0;

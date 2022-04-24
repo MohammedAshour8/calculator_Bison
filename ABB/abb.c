@@ -95,14 +95,14 @@ unsigned es_miembro(abb A, componente celda) {
     return _es_miembro_clave(A, _clave_elem(&celda));
 }
 
-int buscar_nodo(abb *A, char *lexema) {
+float buscar_nodo(abb *A, char *lexema) {
     if (es_vacio(*A)) {
         return 0;
     }
 
     int comp = strcmp(lexema, (*A)->info.lexema);
     if (comp == 0) {
-        return (*A)->info.tipoElemento;
+        return (*A)->info.valor;
     } else if (comp < 0) {
         return (buscar_nodo(&(*A)->izq, lexema));
     } else {
@@ -115,13 +115,14 @@ int buscar_nodo(abb *A, char *lexema) {
 /* Funcion recursiva para insertar un nuevo nodo
    en el arbol. Se presupone que no existe un nodo
    con la misma clave en el arbol. */
-void insertar(abb *A, char *componenteLexico, float valor) {
+void insertar(abb *A, char *componenteLexico, float valor, int tipoElemento) {
     if (es_vacio(*A)) {
         *A = (abb) malloc(sizeof(struct celda));
         (*A)->info.lexema = (char *) malloc(strlen(componenteLexico) + 1 * sizeof(char));
         strcpy((*A)->info.lexema, componenteLexico);
         (*A)->info.lexema[strlen(componenteLexico)] = '\0';
         (*A)->info.valor = valor;
+        (*A)->info.tipoElemento = tipoElemento;
         (*A)->izq = NULL;
         (*A)->der = NULL;
         return;
@@ -130,9 +131,9 @@ void insertar(abb *A, char *componenteLexico, float valor) {
     int comparacion = strcmp(componenteLexico, (*A)->info.lexema);
 
     if (comparacion > 0) {
-        insertar(&(*A)->der, componenteLexico, valor);
+        insertar(&(*A)->der, componenteLexico, valor, tipoElemento);
     } else {
-        insertar(&(*A)->izq, componenteLexico, valor);
+        insertar(&(*A)->izq, componenteLexico, valor, tipoElemento);
     }
 }
 
@@ -181,18 +182,56 @@ void _imprimirTabla(abb *A) {
         }
 
         switch ((*A)->info.tipoElemento) {
-            case 400:
+            case CONSTANT:
                 printf("\033[1;33m");
-                printf("Lexema: %d\t\t\tComponente léxico: %s\n", (*A)->info.tipoElemento, (*A)->info.lexema);
+                printf("[CTE]\t%s = %f\n", (*A)->info.lexema, (*A)->info.valor);
+                printf("\033[0m");
+                break;
+            case VARIABLE:
+                printf("\033[0;36m");
+                printf("[VAR]\t%s = %f\n", (*A)->info.lexema, (*A)->info.valor);
                 printf("\033[0m");
                 break;
             default:
                 printf("\033[0;32m");
-                printf("Lexema: %d\t\t\tComponente léxico: %s\n", (*A)->info.tipoElemento, (*A)->info.lexema);
+                printf("[FNC]%s\n", (*A)->info.lexema);
                 printf("\033[0m");
         }
         if (&(*A)->der != NULL) {
             _imprimirTabla(&(*A)->der);
+        }
+    }
+}
+
+void _imprimirEspacioTrabajo(abb *A){
+    if(!es_vacio(*A)){
+        if (&(*A)->izq != NULL) {
+            _imprimirEspacioTrabajo(&(*A)->izq);
+        }
+
+        if ((*A)->info.tipoElemento == VARIABLE) {
+            printf("\033[0;36m");
+            printf("[VAR]\t%s = %f\n", (*A)->info.lexema, (*A)->info.valor);
+            printf("\033[0m");
+        }
+        if (&(*A)->der != NULL) {
+            _imprimirEspacioTrabajo(&(*A)->der);
+        }
+    }
+}
+
+void _eliminarEspacioTrabajo(abb *A){
+    if(!es_vacio(*A)){
+        if (&(*A)->izq != NULL) {
+            _eliminarEspacioTrabajo(&(*A)->izq);
+        }
+
+        if ((*A)->info.tipoElemento == VARIABLE) {
+            free(*A);
+            *A = NULL;
+        }
+        if (&(*A)->der != NULL) {
+            _eliminarEspacioTrabajo(&(*A)->der);
         }
     }
 }

@@ -21,3 +21,14 @@
 1	44	1650722075985610336	CMakeFiles/practica3.dir/semantico.tab.c.o	28a4ac5f0d7b8685
 2	71	1650722076013610552	CMakeFiles/practica3.dir/lex.yy.c.o	283d4033598670f9
 71	90	1650722076033610707	practica3	12c2d10a092f02d3
+1	36	1650738917866692358	CMakeFiles/practica3.dir/TablaSimbolos/TablaSimbolos.c.o	5947236ce327514e
+1	53	1650738917886692500	CMakeFiles/practica3.dir/ABB/abb.c.o	209a34cae74c3fcf
+1	54	1650738917886692500	CMakeFiles/practica3.dir/semantico.tab.c.o	28a4ac5f0d7b8685
+0	67	1650738917902692614	CMakeFiles/practica3.dir/main.c.o	27ab6eaba166a51d
+2	102	1650738917934692841	CMakeFiles/practica3.dir/lex.yy.c.o	283d4033598670f9
+102	126	1650738917958693012	practica3	12c2d10a092f02d3
+1	49	1650800138080475520	CMakeFiles/practica3.dir/TablaSimbolos/TablaSimbolos.c.o	5947236ce327514e
+1	55	1650800138088475603	CMakeFiles/practica3.dir/ABB/abb.c.o	209a34cae74c3fcf
+0	60	1650800138092475645	CMakeFiles/practica3.dir/main.c.o	27ab6eaba166a51d
+1	67	1650800138100475729	CMakeFiles/practica3.dir/semantico.tab.c.o	28a4ac5f0d7b8685
+2	83	1650800138116475897	CMakeFiles/practica3.dir/lex.yy.c.o	283d4033598670f9

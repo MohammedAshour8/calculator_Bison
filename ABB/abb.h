@@ -72,7 +72,7 @@ unsigned es_miembro(abb A, componente E);
  * @param cl Clave que se buscara.
  * @param nodo Puntero a un componente.
  */
-int buscar_nodo(abb *A, char *lexema);
+float buscar_nodo(abb *A, char *lexema);
 
 //FUNCIONES DE MODIFICACIÓN
 /**
@@ -82,7 +82,7 @@ int buscar_nodo(abb *A, char *lexema);
  * @param A Arbol binario
  * @param E Informacion del nuevo nodo.
  */
-void insertar(abb *A, char *componenteLexico, float valor);
+void insertar(abb *A, char *componenteLexico, float valor, int tipoElemento);
 /**
  * Suprime el nodo del arbol <A>
  * @param A
@@ -100,5 +100,9 @@ void modificar(abb A, componente nodo);
  * @param A
  */
 void _imprimirTabla(abb *A);
+
+void _imprimirEspacioTrabajo(abb *A);
+
+void _eliminarEspacioTrabajo(abb *A);
 
 #endif	// ABB_H

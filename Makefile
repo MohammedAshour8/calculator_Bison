@@ -7,7 +7,7 @@ SOURCE = main.c ABB/abb.c GestionErrores/GestionErrores.c TablaSimbolos/TablaSim
 DEPENDENCIES = lex.yy.h semantico.tab.h ABB/abb.h GestionErrores/GestionErrores.h TablaSimbolos/TablaSimbolos.h
 OBJECTS = $(SOURCE:.c=.o)
 $(EXEC): $(OBJECTS)
-	$(CC) $(CFLAGS) $(SOURCE) -o $(EXEC)
+	$(CC) $(CFLAGS) $(SOURCE) -o $(EXEC) -lm
 	rm -f *.o
 %.o: %.c $(DEPENDENCIES)
 	$(CC) -c $< $(INCLUDES)
