@@ -41,6 +41,14 @@ void imprimirEspacioTrabajo(){
     printf("=============================================================\n");
 }
 
+void actualizarValorVariable(char *componentelex, float valor){
+    componente lex;
+    lex.tipoElemento = VARIABLE;
+    lex.value.valor = valor;
+    lex.lexema = componentelex;
+    modificar(tablaSimbolos, lex);
+}
+
 void eliminarEspacioTrabajo(){
     if(!es_vacio(tablaSimbolos)){
         _eliminarEspacioTrabajo(&tablaSimbolos);
@@ -53,9 +61,22 @@ void eliminarEspacioTrabajo(){
  * @param componentelex componente léxico al cual se está buscando su lexema
  * @param estructuraComponente estructura de datos donde se almacena el componente léxico y el lexema
  */
-float buscarElemento(char *componentelex){
+float obtenerValor(char *componentelex){
     // llamada a una función de abb.h
-    return buscar_nodo(&tablaSimbolos, componentelex);
+    return _obtenerValor(&tablaSimbolos, componentelex);
+}
+
+int obtenerTipo(char *componentelex){
+    // llamada a una función de abb.h
+    return _obtenerTipo(&tablaSimbolos, componentelex);
+}
+
+double insertaFuncion(char *componentelex, float valor){
+    return _insertaFuncion(&tablaSimbolos, componentelex, valor);
+}
+
+double ejecutarFuncion(char *componentelex, float valor){
+    return _ejecutaFuncion(&tablaSimbolos, componentelex, valor);
 }
 
 void destruirTabla(){

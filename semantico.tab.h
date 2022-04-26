@@ -55,20 +55,25 @@ extern int yydebug;
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
     NUM = 258,                     /* NUM  */
-    IDENTIFIER = 259,              /* IDENTIFIER  */
-    HELP = 260,                    /* HELP  */
-    EXIT = 261,                    /* EXIT  */
-    CLEAR = 262,                   /* CLEAR  */
-    WORKSPACE = 263,               /* WORKSPACE  */
-    TABLE = 264,                   /* TABLE  */
-    SUM_OP = 265,                  /* SUM_OP  */
-    SUB_OP = 266,                  /* SUB_OP  */
-    MUL_OP = 267,                  /* MUL_OP  */
-    DIV_OP = 268,                  /* DIV_OP  */
-    MOD_OP = 269,                  /* MOD_OP  */
-    POW_OP = 270,                  /* POW_OP  */
-    ASSIGN_OP = 271,               /* ASSIGN_OP  */
-    NEGATIVE = 272                 /* NEGATIVE  */
+    FILE_NAME = 259,               /* FILE_NAME  */
+    IDENTIFIER = 260,              /* IDENTIFIER  */
+    HELP = 261,                    /* HELP  */
+    EXIT = 262,                    /* EXIT  */
+    CLEAR = 263,                   /* CLEAR  */
+    WORKSPACE = 264,               /* WORKSPACE  */
+    TABLE = 265,                   /* TABLE  */
+    LOAD = 266,                    /* LOAD  */
+    SUM_OP = 267,                  /* SUM_OP  */
+    SUB_OP = 268,                  /* SUB_OP  */
+    MUL_OP = 269,                  /* MUL_OP  */
+    DIV_OP = 270,                  /* DIV_OP  */
+    MOD_OP = 271,                  /* MOD_OP  */
+    POW_OP = 272,                  /* POW_OP  */
+    BIGEQ_OP = 273,                /* BIGEQ_OP  */
+    SMAEQ_OP = 274,                /* SMAEQ_OP  */
+    EQEQ_OP = 275,                 /* EQEQ_OP  */
+    ASSIGN_OP = 276,               /* ASSIGN_OP  */
+    NEGATIVE = 277                 /* NEGATIVE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -82,7 +87,7 @@ union YYSTYPE
 	float num;
 	char *lexema;
 
-#line 86 "semantico.tab.h"
+#line 91 "semantico.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

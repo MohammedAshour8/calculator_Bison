@@ -95,6 +95,7 @@ build CMakeFiles/practica3.dir/lex.yy.c.o: C_COMPILER__practica3_Debug /home/moh
 
 build practica3: C_EXECUTABLE_LINKER__practica3_Debug CMakeFiles/practica3.dir/main.c.o CMakeFiles/practica3.dir/ABB/abb.c.o CMakeFiles/practica3.dir/GestionErrores/GestionErrores.c.o CMakeFiles/practica3.dir/TablaSimbolos/TablaSimbolos.c.o CMakeFiles/practica3.dir/semantico.tab.c.o CMakeFiles/practica3.dir/lex.yy.c.o
   FLAGS = -g
+  LINK_LIBRARIES = -lm
   OBJECT_DIR = CMakeFiles/practica3.dir
   POST_BUILD = :
   PRE_LINK = :

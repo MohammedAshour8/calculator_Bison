@@ -41,7 +41,7 @@ NUMBER			        {DECIMAL_LIT}|{FLOAT_LIT}
 
 IDENTIFIER              {LETTER}({LETTER}|{UNICODE_DIGIT})*
 
-FILE_NAME               {IDENTIFIER}
+FILE_NAME               {IDENTIFIER}\.?{LETTER}+
 
 OPERATORS               [+*/%&,;.:|^<>=!~()[\]{}-]
 SUMASSIGN_OP            \+=
@@ -50,32 +50,41 @@ MULTASSIGN_OP           \*=
 DIVASSIGN_OP            \/=
 MODASSIGN_OP            %=
 POWASSIGN_OP            \^=
+BIGGEREQUAL_OP          >=
+SMALLEREQUAL_OP         <=
+EQUALEQUAL_OP           ==
 ASSIGN_OP               =
 
 %x READ
 
 %%
 
-"HELP"          {return HELP;}
-"EXIT"			{yyterminate();}
-"CLEAR"         {return CLEAR;}
-"WORKSPACE"     {return WORKSPACE;}
-"TABLE"         {return TABLE;}
+"HELP"                  {return HELP;}
+"EXIT"			        {yyterminate();}
+"CLEAR"                 {return CLEAR;}
+"WORKSPACE"             {return WORKSPACE;}
+"TABLE"                 {return TABLE;}
+"LOAD "                 {BEGIN(READ); return LOAD;}
 
-{NEWLINE}                       return ((int) *yytext);
+{NEWLINE}               return ((int) *yytext);
 {SEPARATOR}
 
-{IDENTIFIER}    {yylval.lexema = (char *) malloc(sizeof(yytext)); yylval.lexema = strdup(yytext); return IDENTIFIER;}
-{NUMBER}        {yylval.num = atof(yytext); return NUM;}
+{IDENTIFIER}            {yylval.lexema = (char *) malloc(sizeof(yytext)); yylval.lexema = strdup(yytext); return IDENTIFIER;}
+{NUMBER}                {yylval.num = atof(yytext); return NUM;}
 
-{OPERATORS}         {return ((int) *yytext);}
-{SUMASSIGN_OP}      return SUM_OP;
-{SUBASSIGN_OP}      return SUB_OP;
-{MULTASSIGN_OP}     return MUL_OP;
-{DIVASSIGN_OP}      return DIV_OP;
-{MODASSIGN_OP}      return MOD_OP;
-{POWASSIGN_OP}      return POW_OP;
-<<EOF>>             {cerrar(); yyrestart(stdin);}
+<READ>{FILE_NAME}       {yylval.lexema = (char *) malloc(sizeof(yytext)); yylval.lexema = strdup(yytext); BEGIN(INITIAL); return FILE_NAME;}
+
+{OPERATORS}             {return ((int) *yytext);}
+{SUMASSIGN_OP}          return SUM_OP;
+{SUBASSIGN_OP}          return SUB_OP;
+{MULTASSIGN_OP}         return MUL_OP;
+{DIVASSIGN_OP}          return DIV_OP;
+{MODASSIGN_OP}          return MOD_OP;
+{POWASSIGN_OP}          return POW_OP;
+{BIGGEREQUAL_OP}        return BIGEQ_OP;
+{SMALLEREQUAL_OP}       return SMAEQ_OP;
+{EQUALEQUAL_OP}         return EQEQ_OP;
+<<EOF>>                 {cerrar(); yyrestart(stdin);}
 
 %%
 

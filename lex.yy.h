@@ -473,4 +473,6 @@ extern int yylex (void);
 
 #line 475 "lex.yy.h"
 #undef yyIN_HEADER
+void abrirArchivo(char *nombreArchivo);
+void cerrar();
 #endif /* yyHEADER_H */

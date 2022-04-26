@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <dlfcn.h>
+#include <gnu/lib-names.h>
 
 ///////////////////////// ESTRUCTURAS DE DATOS
 
@@ -95,20 +97,34 @@ unsigned es_miembro(abb A, componente celda) {
     return _es_miembro_clave(A, _clave_elem(&celda));
 }
 
-float buscar_nodo(abb *A, char *lexema) {
+float _obtenerValor(abb *A, char *lexema) {
     if (es_vacio(*A)) {
         return 0;
     }
 
     int comp = strcmp(lexema, (*A)->info.lexema);
     if (comp == 0) {
-        return (*A)->info.valor;
+        return (*A)->info.value.valor;
     } else if (comp < 0) {
-        return (buscar_nodo(&(*A)->izq, lexema));
+        return (_obtenerValor(&(*A)->izq, lexema));
     } else {
-        return (buscar_nodo(&(*A)->der, lexema));
+        return (_obtenerValor(&(*A)->der, lexema));
+    }
+}
+
+int _obtenerTipo(abb *tablaSimbolos, char *componentelex) {
+    if (es_vacio(*tablaSimbolos)) {
+        return 0;
     }
 
+    int comp = strcmp(componentelex, (*tablaSimbolos)->info.lexema);
+    if (comp == 0) {
+        return (*tablaSimbolos)->info.tipoElemento;
+    } else if (comp < 0) {
+        return (_obtenerTipo(&(*tablaSimbolos)->izq, componentelex));
+    } else {
+        return (_obtenerTipo(&(*tablaSimbolos)->der, componentelex));
+    }
 }
 //OPERACIONES DE MODIFICACIÓN
 
@@ -121,7 +137,7 @@ void insertar(abb *A, char *componenteLexico, float valor, int tipoElemento) {
         (*A)->info.lexema = (char *) malloc(strlen(componenteLexico) + 1 * sizeof(char));
         strcpy((*A)->info.lexema, componenteLexico);
         (*A)->info.lexema[strlen(componenteLexico)] = '\0';
-        (*A)->info.valor = valor;
+        (*A)->info.value.valor = valor;
         (*A)->info.tipoElemento = tipoElemento;
         (*A)->izq = NULL;
         (*A)->der = NULL;
@@ -175,6 +191,38 @@ void modificar(abb A, componente nodo) {
     _modificar(A, cl, nodo);
 }
 
+void _suprimirElem(abb *A, componente elem) {
+    abb aux;
+    if (es_vacio(*A)) {
+        return;
+    }
+
+    tipoclave cl = _clave_elem(&elem);
+    int comp = _comparar_clave_elem(cl, (*A)->info);
+    if (comp < 0) {
+        _suprimirElem(&(*A)->izq, elem);
+    } else if (comp > 0) {
+        _suprimirElem(&(*A)->der, elem);
+    } else if (es_vacio((*A)->izq) && es_vacio((*A)->der)) {
+        free((*A)->info.lexema);
+        free(*A);
+        *A = NULL;
+    } else if (es_vacio((*A)->izq)) {
+        aux = *A;
+        *A = (*A)->der;
+        free(aux->info.lexema);
+        free(aux);
+    } else if (es_vacio((*A)->der)) {
+        aux = *A;
+        *A = (*A)->izq;
+        free(aux->info.lexema);
+        free(aux);
+    } else {
+        componente elem = _suprimir_min(&(*A)->izq);
+        (*A)->info = elem;
+    }
+}
+
 void _imprimirTabla(abb *A) {
     if (!es_vacio(*A)) {
         if (&(*A)->izq != NULL) {
@@ -184,12 +232,12 @@ void _imprimirTabla(abb *A) {
         switch ((*A)->info.tipoElemento) {
             case CONSTANT:
                 printf("\033[1;33m");
-                printf("[CTE]\t%s = %f\n", (*A)->info.lexema, (*A)->info.valor);
+                printf("[CTE]\t%s = %f\n", (*A)->info.lexema, (*A)->info.value.valor);
                 printf("\033[0m");
                 break;
             case VARIABLE:
                 printf("\033[0;36m");
-                printf("[VAR]\t%s = %f\n", (*A)->info.lexema, (*A)->info.valor);
+                printf("[VAR]\t%s = %f\n", (*A)->info.lexema, (*A)->info.value.valor);
                 printf("\033[0m");
                 break;
             default:
@@ -203,15 +251,15 @@ void _imprimirTabla(abb *A) {
     }
 }
 
-void _imprimirEspacioTrabajo(abb *A){
-    if(!es_vacio(*A)){
+void _imprimirEspacioTrabajo(abb *A) {
+    if (!es_vacio(*A)) {
         if (&(*A)->izq != NULL) {
             _imprimirEspacioTrabajo(&(*A)->izq);
         }
 
         if ((*A)->info.tipoElemento == VARIABLE) {
             printf("\033[0;36m");
-            printf("[VAR]\t%s = %f\n", (*A)->info.lexema, (*A)->info.valor);
+            printf("[VAR]\t%s = %f\n", (*A)->info.lexema, (*A)->info.value.valor);
             printf("\033[0m");
         }
         if (&(*A)->der != NULL) {
@@ -220,18 +268,67 @@ void _imprimirEspacioTrabajo(abb *A){
     }
 }
 
-void _eliminarEspacioTrabajo(abb *A){
-    if(!es_vacio(*A)){
-        if (&(*A)->izq != NULL) {
-            _eliminarEspacioTrabajo(&(*A)->izq);
-        }
+void _insertaFuncionEnTabla(abb *A, char *componentelex, void *fnc){
+    if (es_vacio(*A)) {
+        *A = (abb) malloc(sizeof(struct celda));
+        (*A)->info.lexema = (char *) malloc(strlen(componentelex) * sizeof(char));
+        (*A)->info.lexema[0] = '\0';
+        strncat((*A)->info.lexema, componentelex, strlen(componentelex));
+        (*A)->info.tipoElemento = FUNCTION;
+        (*A)->info.value.fnc = fnc;
+        (*A)->izq = NULL;
+        (*A)->der = NULL;
+    } else if (strcmp(componentelex, (*A)->info.lexema) < 0) {
+        _insertaFuncionEnTabla(&(*A)->izq, componentelex, fnc);
+    } else if (strcmp(componentelex, (*A)->info.lexema) > 0) {
+        _insertaFuncionEnTabla(&(*A)->der, componentelex, fnc);
+    }
+}
+
+double _insertaFuncion(abb *A, char *componentelex, float valor) {
+    void *handle;
+    double (*function)(double);
+    char *error;
+
+    handle = dlopen (LIBM_SO, RTLD_LAZY);
+    if (!handle) {
+        fputs (dlerror(), stderr);
+        exit(1);
+    }
+
+    function = dlsym(handle, componentelex);
+    if ((error = dlerror()) != NULL)  {
+        fputs(error, stderr);
+        exit(1);
+    }
+
+    _insertaFuncionEnTabla(A, componentelex, function);
+    dlclose(handle);
+    return ((*function)(valor));
+}
+
+void _eliminarEspacioTrabajo(abb *A) {
+    if (!es_vacio(*A)) {
+        _eliminarEspacioTrabajo(&(*A)->izq);
+        _eliminarEspacioTrabajo(&(*A)->der);
 
         if ((*A)->info.tipoElemento == VARIABLE) {
-            free(*A);
-            *A = NULL;
-        }
-        if (&(*A)->der != NULL) {
-            _eliminarEspacioTrabajo(&(*A)->der);
+            _suprimirElem(A, (*A)->info);
         }
     }
 }
+
+double _ejecutaFuncion(abb *A, char *lexema, float valor){
+    if(!es_vacio(*A)){
+        if(strcmp(lexema, (*A)->info.lexema) == 0){
+            return (*A)->info.value.fnc(valor);
+        } else if(strcmp(lexema, (*A)->info.lexema) < 0){
+            return _ejecutaFuncion(&(*A)->izq, lexema, valor);
+        } else {
+            return _ejecutaFuncion(&(*A)->der, lexema, valor);
+        }
+    }
+
+    return 0;
+}
+

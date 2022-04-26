@@ -8,16 +8,20 @@
 
 typedef char *tipoclave;
 
-typedef struct{
+typedef struct {
     char *lexema;
     int tipoElemento;
-    float valor;
-    double (*fnc)();
+
+    union {
+        float valor;
+
+        double (*fnc)();
+    } value;
 } componente;
 
 //////////////////////////////////////////FIN PARTE MODIFICABLE
 
-typedef struct celda * abb;//tipo opaco
+typedef struct celda *abb;//tipo opaco
 
 /////////////////////////////// FUNCIONES
 
@@ -46,11 +50,13 @@ unsigned es_vacio(abb A);
  * @param A - Arbol original
  */
 abb izq(abb A);
+
 /**
  * Devuelve el subarbol derecho de A
  * @param A - Arbol original
  */
 abb der(abb A);
+
 /**
  * Recupera la informacion de la celda de la raiz del arbol
  * @param A
@@ -72,7 +78,9 @@ unsigned es_miembro(abb A, componente E);
  * @param cl Clave que se buscara.
  * @param nodo Puntero a un componente.
  */
-float buscar_nodo(abb *A, char *lexema);
+float _obtenerValor(abb *A, char *lexema);
+
+int _obtenerTipo(abb *tablaSimbolos, char *componentelex);
 
 //FUNCIONES DE MODIFICACIÓN
 /**
@@ -83,18 +91,21 @@ float buscar_nodo(abb *A, char *lexema);
  * @param E Informacion del nuevo nodo.
  */
 void insertar(abb *A, char *componenteLexico, float valor, int tipoElemento);
+
 /**
  * Suprime el nodo del arbol <A>
  * @param A
  * @param E
  */
-void suprimir(abb *A,componente E);
+void suprimir(abb *A, componente E);
+
 /**
  * Busca el nodo con clave la del nodo y lo modifica.
  * @param A
  * @param nodo
  */
 void modificar(abb A, componente nodo);
+
 /**
  * Imprime la tabla de símbolos
  * @param A
@@ -105,4 +116,8 @@ void _imprimirEspacioTrabajo(abb *A);
 
 void _eliminarEspacioTrabajo(abb *A);
 
-#endif	// ABB_H
+double _insertaFuncion(abb *A, char *componentelex, float valor);
+
+double _ejecutaFuncion(abb *A, char *lexema, float valor);
+
+#endif    // ABB_H

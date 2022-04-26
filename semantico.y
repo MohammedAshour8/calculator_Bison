@@ -20,6 +20,7 @@ void ayuda();
 %start input
 
 %token <num> NUM
+%token <lexema> FILE_NAME
 %token <lexema> IDENTIFIER
 
 %token HELP
@@ -27,6 +28,7 @@ void ayuda();
 %token CLEAR
 %token WORKSPACE
 %token TABLE
+%token LOAD
 
 %token SUM_OP
 %token SUB_OP
@@ -34,6 +36,9 @@ void ayuda();
 %token DIV_OP
 %token MOD_OP
 %token POW_OP
+%token BIGEQ_OP
+%token SMAEQ_OP
+%token EQEQ_OP
 
 %right ASSIGN_OP
 %left '+' '-'
@@ -45,6 +50,9 @@ void ayuda();
 %type <num> exp
 %type <num> define
 %type <num> operations
+%type <num> functions
+%type <num> boolean
+%type <num> file
 
 %%
 
@@ -54,29 +62,48 @@ input:
 
 line:	'\n'	{printf("$ ");}
 	| exp ';' '\n' {printf ("> %f\n$ ", $1);}
-	| exp '\n' {printf ("$ ");}
+	| exp '\n' {printf ("\n$ ");}
 	| error {yyclearin; yyerrok;}
 ;
 
 exp:	NUM	{$$ = $1;}
-	| IDENTIFIER {if (buscarElemento($1) != 0) {$$ = buscarElemento($1);} else {yyerror("Variable no declarada");}}
+	| '-' exp	{$$ = -$2;}
+	| IDENTIFIER {if (obtenerTipo($1) != 0) {$$ = obtenerValor($1);} else {yyerror("Variable no declarada");}}
 	| '(' exp ')' {$$ = $2;}
 	| TABLE {imprimirTabla();}
 	| WORKSPACE {imprimirEspacioTrabajo();}
 	| CLEAR {eliminarEspacioTrabajo();}
 	| HELP {ayuda();}
-	| operations
 	| define
+	| operations
+	| functions
+	| boolean
+	| file
 ;
 
-define:	IDENTIFIER '=' exp {if(buscarElemento($1) == 0) {insertarEnTabla($1, $3, VARIABLE); $$ = $3;}}
+define:	IDENTIFIER '=' exp {if(obtenerTipo($1) == 0) {insertarEnTabla($1, $3, VARIABLE); $$ = $3;}
+			    else if(obtenerTipo($1) == CONSTANT) {yyerror("NO SE PUEDE REASIGNAR UNA CONSTANTE");}
+			    else {actualizarValorVariable($1, $3); $$ = $3;}}
+;
 
 operations:	exp '+' exp {$$ = $1 + $3;}
 		| exp '-' exp {$$ = $1 - $3;}
 		| exp '*' exp {$$ = $1 * $3;}
 		| exp '/' exp {if($3 != 0) {$$ = $1 / $3;} else {yyerror("Division por cero");}}
-		| exp '^' exp {$$ = pow($1, $3);}
 ;
+
+functions:	IDENTIFIER '(' exp ')' {if(obtenerTipo($1) == FUNCTION) {$$ = ejecutarFuncion($1, $3);} else {$$ = insertaFuncion($1, $3);}}
+		| exp '^' exp {$$ = pow($1, $3);}
+		| exp '%' exp {$$ = fmod($1, $3);}
+
+boolean:	exp '>' exp {$1 > $3 ? printf("TRUE\n") : printf("FALSE\n");}
+		| exp '<' exp {$1 < $3 ? printf("TRUE\n") : printf("FALSE\n");}
+		| exp BIGEQ_OP exp {$1 >= $3 ? printf("TRUE\n") : printf("FALSE\n");}
+		| exp SMAEQ_OP exp {$1 <= $3 ? printf("TRUE\n") : printf("FALSE\n");}
+		| exp EQEQ_OP exp {$1 == $3 ? printf("TRUE\n") : printf("FALSE\n");}
+;
+
+file:		LOAD FILE_NAME {abrirArchivo($2);}
 
 %%
 
