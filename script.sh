@@ -1,4 +1,4 @@
 flex lexico.l
-bison -d semantico.y
+bison -d sintactico.y
 make
 ./calculadora

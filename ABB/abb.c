@@ -232,17 +232,25 @@ void _imprimirTabla(abb *A) {
         switch ((*A)->info.tipoElemento) {
             case CONSTANT:
                 printf("\033[1;33m");
-                printf("[CTE]\t%s = %f\n", (*A)->info.lexema, (*A)->info.value.valor);
+                if((*A)->info.value.valor < 0.0001 || (*A)->info.value.valor > 1.0E+8){
+                    printf("[CTE]\t%s = %E\n", (*A)->info.lexema, (*A)->info.value.valor);
+                } else{
+                    printf("[CTE]\t%s = %f\n", (*A)->info.lexema, (*A)->info.value.valor);
+                }
                 printf("\033[0m");
                 break;
             case VARIABLE:
                 printf("\033[0;36m");
-                printf("[VAR]\t%s = %f\n", (*A)->info.lexema, (*A)->info.value.valor);
+                if((*A)->info.value.valor < 0.0001 || (*A)->info.value.valor > 1.0E+8){
+                    printf("[VAR]\t%s = %E\n", (*A)->info.lexema, (*A)->info.value.valor);
+                } else{
+                    printf("[VAR]\t%s = %f\n", (*A)->info.lexema, (*A)->info.value.valor);
+                }
                 printf("\033[0m");
                 break;
             default:
                 printf("\033[0;32m");
-                printf("[FNC]%s\n", (*A)->info.lexema);
+                printf("[FNC]\t%s\n", (*A)->info.lexema);
                 printf("\033[0m");
         }
         if (&(*A)->der != NULL) {
@@ -259,7 +267,11 @@ void _imprimirEspacioTrabajo(abb *A) {
 
         if ((*A)->info.tipoElemento == VARIABLE) {
             printf("\033[0;36m");
-            printf("[VAR]\t%s = %f\n", (*A)->info.lexema, (*A)->info.value.valor);
+            if((*A)->info.value.valor < 0.0001 || (*A)->info.value.valor > 1.0E+8){
+                printf("[VAR]\t%s = %E\n", (*A)->info.lexema, (*A)->info.value.valor);
+            } else{
+                printf("[VAR]\t%s = %f\n", (*A)->info.lexema, (*A)->info.value.valor);
+            }
             printf("\033[0m");
         }
         if (&(*A)->der != NULL) {
@@ -268,7 +280,7 @@ void _imprimirEspacioTrabajo(abb *A) {
     }
 }
 
-void _insertaFuncionEnTabla(abb *A, char *componentelex, void *fnc){
+void __insertaFuncionEnTabla(abb *A, char *componentelex, void *fnc){
     if (es_vacio(*A)) {
         *A = (abb) malloc(sizeof(struct celda));
         (*A)->info.lexema = (char *) malloc(strlen(componentelex) * sizeof(char));
@@ -279,9 +291,9 @@ void _insertaFuncionEnTabla(abb *A, char *componentelex, void *fnc){
         (*A)->izq = NULL;
         (*A)->der = NULL;
     } else if (strcmp(componentelex, (*A)->info.lexema) < 0) {
-        _insertaFuncionEnTabla(&(*A)->izq, componentelex, fnc);
+        __insertaFuncionEnTabla(&(*A)->izq, componentelex, fnc);
     } else if (strcmp(componentelex, (*A)->info.lexema) > 0) {
-        _insertaFuncionEnTabla(&(*A)->der, componentelex, fnc);
+        __insertaFuncionEnTabla(&(*A)->der, componentelex, fnc);
     }
 }
 
@@ -302,7 +314,7 @@ double _insertaFuncion(abb *A, char *componentelex, float valor) {
         exit(1);
     }
 
-    _insertaFuncionEnTabla(A, componentelex, function);
+    __insertaFuncionEnTabla(A, componentelex, function);
     dlclose(handle);
     return ((*function)(valor));
 }

@@ -67,7 +67,7 @@
 
 
 /* First part of user prologue.  */
-#line 1 "semantico.y"
+#line 1 "sintactico.y"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -81,7 +81,7 @@ extern int yylex();
 void yyerror(char *s);
 void ayuda();
 
-#line 85 "semantico.tab.c"
+#line 85 "sintactico.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -104,7 +104,7 @@ void ayuda();
 #  endif
 # endif
 
-#include "semantico.tab.h"
+#include "sintactico.tab.h"
 /* Symbol kind.  */
 enum yysymbol_kind_t
 {
@@ -1167,165 +1167,165 @@ yyreduce:
   switch (yyn)
     {
   case 4: /* line: '\n'  */
-#line 63 "semantico.y"
+#line 63 "sintactico.y"
                 {printf("$ ");}
-#line 1173 "semantico.tab.c"
+#line 1173 "sintactico.tab.c"
     break;
 
   case 5: /* line: exp ';' '\n'  */
-#line 64 "semantico.y"
+#line 64 "sintactico.y"
                        {printf ("> %f\n$ ", (yyvsp[-2].num));}
-#line 1179 "semantico.tab.c"
+#line 1179 "sintactico.tab.c"
     break;
 
   case 6: /* line: exp '\n'  */
-#line 65 "semantico.y"
+#line 65 "sintactico.y"
                    {printf ("\n$ ");}
-#line 1185 "semantico.tab.c"
+#line 1185 "sintactico.tab.c"
     break;
 
   case 7: /* line: error  */
-#line 66 "semantico.y"
+#line 66 "sintactico.y"
                 {yyclearin; yyerrok;}
-#line 1191 "semantico.tab.c"
+#line 1191 "sintactico.tab.c"
     break;
 
   case 8: /* exp: NUM  */
-#line 69 "semantico.y"
+#line 69 "sintactico.y"
                 {(yyval.num) = (yyvsp[0].num);}
-#line 1197 "semantico.tab.c"
+#line 1197 "sintactico.tab.c"
     break;
 
   case 9: /* exp: '-' exp  */
-#line 70 "semantico.y"
+#line 70 "sintactico.y"
                         {(yyval.num) = -(yyvsp[0].num);}
-#line 1203 "semantico.tab.c"
+#line 1203 "sintactico.tab.c"
     break;
 
   case 10: /* exp: IDENTIFIER  */
-#line 71 "semantico.y"
+#line 71 "sintactico.y"
                      {if (obtenerTipo((yyvsp[0].lexema)) != 0) {(yyval.num) = obtenerValor((yyvsp[0].lexema));} else {yyerror("Variable no declarada");}}
-#line 1209 "semantico.tab.c"
+#line 1209 "sintactico.tab.c"
     break;
 
   case 11: /* exp: '(' exp ')'  */
-#line 72 "semantico.y"
+#line 72 "sintactico.y"
                       {(yyval.num) = (yyvsp[-1].num);}
-#line 1215 "semantico.tab.c"
+#line 1215 "sintactico.tab.c"
     break;
 
   case 12: /* exp: TABLE  */
-#line 73 "semantico.y"
+#line 73 "sintactico.y"
                 {imprimirTabla();}
-#line 1221 "semantico.tab.c"
+#line 1221 "sintactico.tab.c"
     break;
 
   case 13: /* exp: WORKSPACE  */
-#line 74 "semantico.y"
+#line 74 "sintactico.y"
                     {imprimirEspacioTrabajo();}
-#line 1227 "semantico.tab.c"
+#line 1227 "sintactico.tab.c"
     break;
 
   case 14: /* exp: CLEAR  */
-#line 75 "semantico.y"
+#line 75 "sintactico.y"
                 {eliminarEspacioTrabajo();}
-#line 1233 "semantico.tab.c"
+#line 1233 "sintactico.tab.c"
     break;
 
   case 15: /* exp: HELP  */
-#line 76 "semantico.y"
+#line 76 "sintactico.y"
                {ayuda();}
-#line 1239 "semantico.tab.c"
+#line 1239 "sintactico.tab.c"
     break;
 
   case 21: /* define: IDENTIFIER '=' exp  */
-#line 84 "semantico.y"
-                           {if(obtenerTipo((yyvsp[-2].lexema)) == 0) {insertarEnTabla((yyvsp[-2].lexema), (yyvsp[0].num), VARIABLE); (yyval.num) = (yyvsp[0].num);}
+#line 84 "sintactico.y"
+                           {if(obtenerTipo((yyvsp[-2].lexema)) == 0) {insertarVariableEnTabla((yyvsp[-2].lexema), (yyvsp[0].num), VARIABLE); (yyval.num) = (yyvsp[0].num);}
 			    else if(obtenerTipo((yyvsp[-2].lexema)) == CONSTANT) {yyerror("NO SE PUEDE REASIGNAR UNA CONSTANTE");}
 			    else {actualizarValorVariable((yyvsp[-2].lexema), (yyvsp[0].num)); (yyval.num) = (yyvsp[0].num);}}
-#line 1247 "semantico.tab.c"
+#line 1247 "sintactico.tab.c"
     break;
 
   case 22: /* operations: exp '+' exp  */
-#line 89 "semantico.y"
+#line 89 "sintactico.y"
                             {(yyval.num) = (yyvsp[-2].num) + (yyvsp[0].num);}
-#line 1253 "semantico.tab.c"
+#line 1253 "sintactico.tab.c"
     break;
 
   case 23: /* operations: exp '-' exp  */
-#line 90 "semantico.y"
+#line 90 "sintactico.y"
                               {(yyval.num) = (yyvsp[-2].num) - (yyvsp[0].num);}
-#line 1259 "semantico.tab.c"
+#line 1259 "sintactico.tab.c"
     break;
 
   case 24: /* operations: exp '*' exp  */
-#line 91 "semantico.y"
+#line 91 "sintactico.y"
                               {(yyval.num) = (yyvsp[-2].num) * (yyvsp[0].num);}
-#line 1265 "semantico.tab.c"
+#line 1265 "sintactico.tab.c"
     break;
 
   case 25: /* operations: exp '/' exp  */
-#line 92 "semantico.y"
+#line 92 "sintactico.y"
                               {if((yyvsp[0].num) != 0) {(yyval.num) = (yyvsp[-2].num) / (yyvsp[0].num);} else {yyerror("Division por cero");}}
-#line 1271 "semantico.tab.c"
+#line 1271 "sintactico.tab.c"
     break;
 
   case 26: /* functions: IDENTIFIER '(' exp ')'  */
-#line 95 "semantico.y"
+#line 95 "sintactico.y"
                                        {if(obtenerTipo((yyvsp[-3].lexema)) == FUNCTION) {(yyval.num) = ejecutarFuncion((yyvsp[-3].lexema), (yyvsp[-1].num));} else {(yyval.num) = insertaFuncion((yyvsp[-3].lexema), (yyvsp[-1].num));}}
-#line 1277 "semantico.tab.c"
+#line 1277 "sintactico.tab.c"
     break;
 
   case 27: /* functions: exp '^' exp  */
-#line 96 "semantico.y"
+#line 96 "sintactico.y"
                               {(yyval.num) = pow((yyvsp[-2].num), (yyvsp[0].num));}
-#line 1283 "semantico.tab.c"
+#line 1283 "sintactico.tab.c"
     break;
 
   case 28: /* functions: exp '%' exp  */
-#line 97 "semantico.y"
+#line 97 "sintactico.y"
                               {(yyval.num) = fmod((yyvsp[-2].num), (yyvsp[0].num));}
-#line 1289 "semantico.tab.c"
+#line 1289 "sintactico.tab.c"
     break;
 
   case 29: /* boolean: exp '>' exp  */
-#line 99 "semantico.y"
+#line 99 "sintactico.y"
                             {(yyvsp[-2].num) > (yyvsp[0].num) ? printf("TRUE\n") : printf("FALSE\n");}
-#line 1295 "semantico.tab.c"
+#line 1295 "sintactico.tab.c"
     break;
 
   case 30: /* boolean: exp '<' exp  */
-#line 100 "semantico.y"
+#line 100 "sintactico.y"
                               {(yyvsp[-2].num) < (yyvsp[0].num) ? printf("TRUE\n") : printf("FALSE\n");}
-#line 1301 "semantico.tab.c"
+#line 1301 "sintactico.tab.c"
     break;
 
   case 31: /* boolean: exp BIGEQ_OP exp  */
-#line 101 "semantico.y"
+#line 101 "sintactico.y"
                                    {(yyvsp[-2].num) >= (yyvsp[0].num) ? printf("TRUE\n") : printf("FALSE\n");}
-#line 1307 "semantico.tab.c"
+#line 1307 "sintactico.tab.c"
     break;
 
   case 32: /* boolean: exp SMAEQ_OP exp  */
-#line 102 "semantico.y"
+#line 102 "sintactico.y"
                                    {(yyvsp[-2].num) <= (yyvsp[0].num) ? printf("TRUE\n") : printf("FALSE\n");}
-#line 1313 "semantico.tab.c"
+#line 1313 "sintactico.tab.c"
     break;
 
   case 33: /* boolean: exp EQEQ_OP exp  */
-#line 103 "semantico.y"
+#line 103 "sintactico.y"
                                   {(yyvsp[-2].num) == (yyvsp[0].num) ? printf("TRUE\n") : printf("FALSE\n");}
-#line 1319 "semantico.tab.c"
+#line 1319 "sintactico.tab.c"
     break;
 
   case 34: /* file: LOAD FILE_NAME  */
-#line 106 "semantico.y"
+#line 106 "sintactico.y"
                                {abrirArchivo((yyvsp[0].lexema));}
-#line 1325 "semantico.tab.c"
+#line 1325 "sintactico.tab.c"
     break;
 
 
-#line 1329 "semantico.tab.c"
+#line 1329 "sintactico.tab.c"
 
       default: break;
     }
@@ -1519,13 +1519,14 @@ yyreturn:
   return yyresult;
 }
 
-#line 108 "semantico.y"
+#line 108 "sintactico.y"
 
 
 void yyerror(char *s) {
 	fprintf(stderr, "Error: %s\n", s);
 }
 
+// función que imprimirá por pantalla las diferentes opciones que tiene el usuario
 void ayuda() {
 	printf("\n\tHELP\n\t\tMuestra esta ayuda\n\n");
 	printf("\tEXIT\n\t\tCierra el programa\n\n");

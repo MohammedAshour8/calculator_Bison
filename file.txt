@@ -1,4 +1,6 @@
 a=1
 b=5
 a+b;
-
+cos(60);
+TABLE
+a= sin(PI/2) +4;

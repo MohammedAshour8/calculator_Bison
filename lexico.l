@@ -5,7 +5,7 @@
 #include <ctype.h>
 #include "TablaSimbolos/TablaSimbolos.h"
 #include "definiciones.h"
-#include "semantico.tab.h"
+#include "sintactico.tab.h"
 
 void abrirArchivo(char *nombreArchivo);
 void cerrar();

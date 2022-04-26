@@ -3,8 +3,8 @@ CFLAGS = -Wall
 HEADER_FILES_DIR = .
 INCLUDES = -I $(HEADER_FILES_DIR)
 EXEC= calculadora
-SOURCE = main.c ABB/abb.c GestionErrores/GestionErrores.c TablaSimbolos/TablaSimbolos.c lex.yy.c semantico.tab.c
-DEPENDENCIES = lex.yy.h semantico.tab.h ABB/abb.h GestionErrores/GestionErrores.h TablaSimbolos/TablaSimbolos.h
+SOURCE = main.c ABB/abb.c GestionErrores/GestionErrores.c TablaSimbolos/TablaSimbolos.c lex.yy.c sintactico.tab.c
+DEPENDENCIES = lex.yy.h sintactico.tab.h ABB/abb.h GestionErrores/GestionErrores.h TablaSimbolos/TablaSimbolos.h
 OBJECTS = $(SOURCE:.c=.o)
 $(EXEC): $(OBJECTS)
 	$(CC) $(CFLAGS) $(SOURCE) -o $(EXEC) -lm -ldl

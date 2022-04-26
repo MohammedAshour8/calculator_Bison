@@ -2,7 +2,7 @@
 
 void inicializarTabla();
 
-void insertarEnTabla(char *componente, float valor, int tipo);
+void insertarVariableEnTabla(char *componente, float valor, int tipo);
 
 void imprimirTabla();
 

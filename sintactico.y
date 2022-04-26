@@ -81,7 +81,7 @@ exp:	NUM	{$$ = $1;}
 	| file
 ;
 
-define:	IDENTIFIER '=' exp {if(obtenerTipo($1) == 0) {insertarEnTabla($1, $3, VARIABLE); $$ = $3;}
+define:	IDENTIFIER '=' exp {if(obtenerTipo($1) == 0) {insertarVariableEnTabla($1, $3, VARIABLE); $$ = $3;}
 			    else if(obtenerTipo($1) == CONSTANT) {yyerror("NO SE PUEDE REASIGNAR UNA CONSTANTE");}
 			    else {actualizarValorVariable($1, $3); $$ = $3;}}
 ;
@@ -107,10 +107,12 @@ file:		LOAD FILE_NAME {abrirArchivo($2);}
 
 %%
 
+// función que servirá para imprimir el error y su descripción en caso de haberlo
 void yyerror(char *s) {
 	fprintf(stderr, "Error: %s\n", s);
 }
 
+// función que imprimirá por pantalla las diferentes opciones que tiene el usuario
 void ayuda() {
 	printf("\n\tHELP\n\t\tMuestra esta ayuda\n\n");
 	printf("\tEXIT\n\t\tCierra el programa\n\n");
